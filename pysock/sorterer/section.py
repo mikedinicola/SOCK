@@ -113,11 +113,14 @@ class Section(object):
             line_index += 1
 
     def feed_records(self, lines):
-        line_index = self.start_line_index + 1
+		if self.start_line_index is None:
+			AssertionError('Section %s does not contain starting line index.' % self.key)
+		else:
+			line_index = self.start_line_index + 1
 
-        while (line_index < self.end_line_index):
-            record = Record(lines, line_index)
-            self.records.append(record)
-            line_index += len(record.property_lines)
+			while (line_index < self.end_line_index):
+				record = Record(lines, line_index)
+				self.records.append(record)
+				line_index += len(record.property_lines)
 
 

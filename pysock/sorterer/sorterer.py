@@ -45,20 +45,20 @@ def sort_lines_in_section(section_key, lines):
     section = Section(key=section_key, lines=lines)
 
     if section.start_line_index is None or section.end_line_index is None:
-        AssertionError('Section %s does not contain starting or ending line index.' % section_key)
+		AssertionError('Section %s does not contain starting or ending line index.' % section_key)
+    else:
+		section.records.sort(key=lambda x: x.name, reverse=False)
 
-    section.records.sort(key=lambda x: x.name, reverse=False)
+		for record in section.records:
+			for line in record.property_lines:
+				del lines[section.start_line_index + 1]
 
-    for record in section.records:
-        for line in record.property_lines:
-            del lines[section.start_line_index + 1]
-
-    line_index = section.start_line_index + 1
-    for record in section.records:
-        sort_deep_records_in_record(record)
-        for line in record.property_lines:
-            lines.insert(line_index, line)
-            line_index += 1
+		line_index = section.start_line_index + 1
+		for record in section.records:
+			sort_deep_records_in_record(record)
+			for line in record.property_lines:
+				lines.insert(line_index, line)
+				line_index += 1
 
 
 def sort_deep_records_in_record(record):
