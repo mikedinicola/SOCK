@@ -23,6 +23,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+set -eu
+
+echo "pre-commit misplaced views check start"
+
+failed=0
+
+misplaced_pattern='misplaced="YES"'
+
+if git diff-index -p -M --cached HEAD -- '*.xib' '*.storyboard' | grep '^+' | egrep "$misplaced_pattern" 
+then
+  echo "COMMIT REJECTED for misplaced views. Correct them before committing."
+  failed=1
+fi
+
+echo "pre-commit misplaced views check end"
 
 echo "pre-commit pysock script start"
 
@@ -34,6 +49,7 @@ git diff --name-only --cached >> $temp_file_name
 
 ######## Looking for path of project.pbxproj file
 file="$temp_file_name"
+pathToProjectPbxproj=""
 while read line 
 do
 	if [[ $line =~ .*project.pbxproj.* ]]; then
@@ -56,3 +72,5 @@ done <"$file"
 rm $temp_file_name
 
 echo "pre-commit pysock script end"
+
+exit $failed
