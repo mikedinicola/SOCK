@@ -19,7 +19,7 @@ Sorting script is ran every time you commit changes of .pbxproj file.
 How to use it?
 ---
 1. First off you need to clone **pysock** directory and **sock-sort.sh** script into root of your project.
-2. Next you need to create git hook: `ln -s ../../sock-sort.sh .git/hooks/pre-commit`
+2. Next you need to create git hook: `./bootstrap.sh`
 3. Add permissions `chmod 555 .git/hooks/pre-commit` 
 4. In your master branch sort .pbxproj file for the first time by changing something in .pbxproj and commiting **or** manually running sorting script: `python pysock/sock.py AwesomeProject.xcodeproj/project.pbxproj` and then commiting changes.
 5. And your done! Every next branch will have sorted .pbxproj file and every time you merge you'll see less conflicts.
